@@ -6,6 +6,8 @@ const router = Router();
 const controller = new instausercontroller.InstaUserController();
 
 
-router.get('/',controller.getUsers)
+// router.get('/:username',controller.getUsers)
+
+router.get('/:username',controller.getUsers);
 
 export default { router };

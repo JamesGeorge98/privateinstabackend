@@ -6,26 +6,27 @@ import { Request, Response } from 'express';
 
 
 
+
 class InstaUserController {
-    private instaUserModel: InstaUserModel[];
 
-    constructor() {
-        this.instaUserModel = [];
-    }
 
-    createUserModel({ firstname, lastname, username, uuid, phonenumber, email }: InstaUserModel) {
-        const usermodel  = new InstaUserModel( {firstname, lastname, username, uuid, phonenumber, email });
-    }
 
-    getUsers = (_req: Request, res: Response) => {
-        pool.query(queries.allUser, (error, results) => {
+    userData: InstaUserModel[] = [];
+
+    getUsers = async (req: Request, res: Response) => {
+        var username = req.params.username;
+        pool.query<InstaUserModel>(`SELECT user_name FROM insta_users WHERE user_name = '${username}'`, (error, results) => {
+            console.log(results);
             if (error) {
                 console.log(error);
-                
-                // res.json(200).json("something went wrong");
+                res.send("doest not exists");
             }
-            console.log(results);
-            res.status(200).json(results.rows);
+
+            for (let i of results.rows) {
+                const data = new InstaUserModel(i);
+                this.userData.push(data);
+            }
+            res.send(this.userData)
         });
     };
 
@@ -34,4 +35,4 @@ class InstaUserController {
 
 
 
-export default { InstaUserController};
+export default { InstaUserController };
