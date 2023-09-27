@@ -94,7 +94,34 @@ class SignUpController {
                 response.message = undefined;
                 return res.status(200).json(response);
             } else {
-
+                // pool.query<UserModel>(`${queries.createUser} = '${username}'`, (error, results) => {
+                //     if (error) {
+                //         console.log(error);
+                //         response = {
+                //             status: false,
+                //             data: randomUserName,
+                //             message: "Something Went Wrong"
+                //         };
+                //         return res.status(204).json(response);
+                //     }
+    
+                //     // if rows is populated then generate random username
+                //     if (results.rows.length > 0) {
+    
+                //         for (let i = 0; i < 5; i++) {
+                //             randomUserName.push(`${username}${getRandomRangedNumber.getRandomRangedNumber(9999, 10)}`);
+                //         }
+                //         response = {
+                //             status: true,
+                //             data: randomUserName,
+                //             message: "These are some available names"
+                //         };
+                //         return res.status(200).json(response);
+                //     }
+    
+                //     // return default reponse
+                //     return res.status(200).json(response);
+                // });
                 console.log("goof");
                 return res.status(200).json("good");
 
