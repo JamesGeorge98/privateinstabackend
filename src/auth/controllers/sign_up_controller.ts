@@ -31,7 +31,7 @@ class SignUpController {
                         data: randomUserName,
                         message: "Something Went Wrong"
                     };
-                    return res.status(204).json(response);
+                    return res.status(500).json(response);
                 }
 
                 // if rows is populated then generate random username
@@ -49,7 +49,7 @@ class SignUpController {
                 }
 
                 // return default reponse
-                return res.status(200).json(response);
+                return res.status(204).json(response);
             });
         } catch (error) {
             console.log(error);
@@ -83,6 +83,7 @@ class SignUpController {
                 last_name: request.last_name,
                 phone_number: request.phone_number,
                 uuid: request.uuid,
+                password: request.password
             });
 
             // checking for null values
@@ -92,49 +93,45 @@ class SignUpController {
                 // throwing null field error
                 response.error = isAnyNullFieldsAreNull as string;
                 response.message = undefined;
-                return res.status(200).json(response);
+                return res.status(400).json(response);
             } else {
-                // pool.query<UserModel>(`${queries.createUser} = '${username}'`, (error, results) => {
-                //     if (error) {
-                //         console.log(error);
-                //         response = {
-                //             status: false,
-                //             data: randomUserName,
-                //             message: "Something Went Wrong"
-                //         };
-                //         return res.status(204).json(response);
-                //     }
-    
-                //     // if rows is populated then generate random username
-                //     if (results.rows.length > 0) {
-    
-                //         for (let i = 0; i < 5; i++) {
-                //             randomUserName.push(`${username}${getRandomRangedNumber.getRandomRangedNumber(9999, 10)}`);
-                //         }
-                //         response = {
-                //             status: true,
-                //             data: randomUserName,
-                //             message: "These are some available names"
-                //         };
-                //         return res.status(200).json(response);
-                //     }
-    
-                //     // return default reponse
-                //     return res.status(200).json(response);
-                // });
-                console.log("goof");
-                return res.status(200).json("good");
+                const values = [model.user_name, model.first_name, model.last_name, model.email, model.phone_number,model.password];
+                pool.query<UserModel>(queries.createUser, values, (error, result) => {
 
+                    if (error) {
+                        console.log(error);
+                        response = {
+                            status: false,
+                       
+                            message: "Something Went Wrong"
+                        };
+                        return res.status(500).json(response);
+                    }
+
+                    if(result.rows.length > 0){
+                        response = {
+                            status: true,
+                            data: undefined,
+                            message: "User Signed Up Successfully"
+                        };
+                        return res.status(201).json(response);
+                    }
+                    // response = {
+                    //     status: false,
+                    //     data: undefined,
+                    //     message: "Something Went Wrong"
+                    // };
+                    // return res.status(200).json(response);
+                   
+
+                });
             }
-
         } catch (error) {
             console.log(error);
             response.status = false;
             response.message = "Internal Server Error";
             return res.status(500).json(response);
         }
-
-
 
     };
 
