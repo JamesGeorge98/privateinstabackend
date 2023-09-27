@@ -8,27 +8,26 @@ import { Request, Response } from 'express';
 
 
 class InstaUserController {
-
-
-
-    userData: InstaUserModel[] = [];
-
+ 
     getUsers = async (req: Request, res: Response) => {
+        var fdata : InstaUserModel[] = [];
         var username = req.params.username;
-        pool.query<InstaUserModel>(`SELECT user_name FROM insta_users WHERE user_name = '${username}'`, (error, results) => {
-            console.log(results);
+       var j =  pool.query<InstaUserModel>(`SELECT user_name FROM insta_users WHERE user_name = '${username}'`, (error, results) => {
             if (error) {
                 console.log(error);
-                res.send("doest not exists");
+                res.status(204).json("Something Went Wrong");
             }
-
+            
             for (let i of results.rows) {
                 const data = new InstaUserModel(i);
-                this.userData.push(data);
-            }
-            res.send(this.userData)
+                fdata.push(data);
+            }   
+            res.status(200).json(fdata)
         });
+        console.log(fdata);
     };
+
+
 
 }
 

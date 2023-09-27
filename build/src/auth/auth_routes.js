@@ -4,9 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const insta_user_controller_1 = __importDefault(require("./insta_user_controller"));
+const sign_up_controller_1 = __importDefault(require("./controllers/sign_up_controller"));
 const router = (0, express_1.Router)();
-const controller = new insta_user_controller_1.default.InstaUserController();
-// router.get('/:username',controller.getUsers)
-router.get('/:username', controller.getUsers);
+const signUpController = new sign_up_controller_1.default.SignUpController();
+router.get('/:username', signUpController.isUserNameAvaliable);
 exports.default = { router };
