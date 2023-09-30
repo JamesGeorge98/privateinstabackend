@@ -50,10 +50,10 @@ class Validator {
             message: "At least one field (user_name or email or phone_number) is required"
         };
 
-        const { user_name, email, phone_number, password } = req.body;
+        const { user, password } = req.body;
 
-        if (user_name || email || phone_number) {
-            if (password) {
+        if(user){
+            if (password ) {
                 return next();
             } else {
                 Validator.response = {
@@ -61,7 +61,14 @@ class Validator {
                     message: "Password Is required"
                 };
             }
+        }else{
+            Validator.response = {
+                status: false,
+                message: "username, phonenumber or email Is required"
+            };
         }
+        
+
 
         return res.status(400).json(Validator.response);
     }

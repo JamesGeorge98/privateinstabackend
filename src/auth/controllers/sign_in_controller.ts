@@ -18,15 +18,10 @@ class SignInController {
 
         try {
             // converting req body to model
-            var request = req.body as UserModel
+            var request = req.body;
 
-            // initiating model
-            var model = new UserModel({
-                email: request.email,
-                password: request.password
-            });
+            const values = [request.user];
 
-            const values = [model.email];
             pool.query<UserModel>(queries.signIn, values, (error, result) => {
 
                 if (error) {
