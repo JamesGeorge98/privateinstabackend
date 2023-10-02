@@ -8,6 +8,6 @@ const router = Router();
 
 router.get('/:username',SignUpController.SignUpController.isUserNameAvaliable);
 router.post('/signup',Validator.signUpValidation,SignUpController.SignUpController.signUpUser);
-router.post('/signin',Validator.sigInValidation,SignInController.SignInController.signInUser);
+router.post('/signin',Validator.signInValidation,SignInController.SignInController.signInUser);
 
 export default { router };

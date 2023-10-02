@@ -1,13 +1,13 @@
-import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
 
 class JWTToken {
 
     static jwtkey: string = "Doreamon";
 
-    static createToken(username: string): string {
-        const token = jwt.sign({ username }, this.jwtkey, { expiresIn: '1h' });
+    static createToken(uuid: string): string {
+        const token = jwt.sign({ uuid }, this.jwtkey, { expiresIn: '1h' });
         return token;
     }
 
@@ -19,8 +19,8 @@ class JWTToken {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
-        // Verify token
-        jwt.verify(token, this.jwtkey, (err, user) => {
+        // Verify token 
+        jwt.verify(token, this.jwtkey, (err : any, user : any) => {
             if (err) {
                 return res.status(403).json({ message: 'Forbidden' });
             }

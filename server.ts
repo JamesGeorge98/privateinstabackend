@@ -1,5 +1,4 @@
 import express from 'express';
-import userRoute from './src/insta_users/insta_user_routes';
 import authRoute from './src/auth/auth_routes';
 const app = express();
 const port = 3000;
