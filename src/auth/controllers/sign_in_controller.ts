@@ -4,6 +4,7 @@ import { UserModel } from '../../base/models/user_model';
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../base/models/base_response';
 import sendApiResponse from '../../utils/helper'
+// import JWTToken from '../../utils/jwt';
 
 
 class SignInController {
@@ -41,6 +42,8 @@ class SignInController {
                             data: resposeModel,
                             message: "Successfully Logged In"
                         };
+
+                        //JWTToken.makeToken(  result.rows[0].user_name);
                         return res.status(200).json(response);
                     } else {
                         response = {

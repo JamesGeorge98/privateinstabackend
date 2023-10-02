@@ -76,7 +76,7 @@ class SignUpController {
             var request = req.body as UserModel
 
             const values = [request.user_name, request.first_name, request.last_name, request.email, request.phone_number, request.password];
-            pool.query<UserModel>(queries.createUser, values, (error, result) => {
+            pool.query<UserModel>(queries.createUser, values, async (error, result)  =>  {
 
                 if (error) {
                     console.log(error);
@@ -88,7 +88,10 @@ class SignUpController {
                     return res.status(500).json(response);
                 }
 
-                if (result.rows.length > 0) {
+                if (result.rows.length > 0)  {
+
+
+
                     response = {
                         status: true,
                         data: undefined,
