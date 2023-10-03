@@ -32,8 +32,7 @@ class SignInController {
                     const resposeModel = new SignInModel({
                         uuid: result.rows[0].uuid,
                         user_name: result.rows[0].user_name,
-                        jwt_token: result.rows[0].jwt_token,
-
+                        //jwt_token: result.rows[0].jwt_token,
                     });
                     response = {
                         status: true,

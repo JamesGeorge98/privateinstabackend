@@ -2,6 +2,8 @@ import express from 'express';
 import authRoute from './src/auth/auth_routes';
 const app = express();
 const port = 3000;
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 app.use(express.json());
 

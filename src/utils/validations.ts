@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ApiResponse } from '../base/models/base_response';
 import { UserModel } from '../base/models/user_model';
+import JWTToken from './jwt';
 
 
 class Validator {
@@ -55,6 +56,7 @@ class Validator {
 
         if (user) {
             if (password) {
+                //JWTToken.authenticateToken(req,res,next);
                 return next();
             } else {
                 Validator.response = {

@@ -87,7 +87,7 @@ class SignUpController {
 
                 const token = JWTToken.createToken(result.rows[0].uuid ?? "default");
 
-                await pool.query(queries.addToken, [token, result.rows[0].user_name]);
+                //await pool.query(queries.addToken, [token, result.rows[0].user_name]);
 
                 response = {
                     status: true,

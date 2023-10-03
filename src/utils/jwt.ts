@@ -7,7 +7,7 @@ class JWTToken {
     static jwtkey: string = "Doreamon";
 
     static createToken(uuid: string): string {
-        const token = jwt.sign({ uuid }, this.jwtkey, { expiresIn: '1h' });
+        const token = jwt.sign({ uuid }, process.env.ACCESS_TOKEN as any, { expiresIn: '1h' });
         return token;
     }
 
@@ -15,12 +15,13 @@ class JWTToken {
 
         const token = req.headers.authorization?.split(' ')[1];
 
+
         if (!token) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
         // Verify token 
-        jwt.verify(token, this.jwtkey, (err : any, user : any) => {
+        jwt.verify(token, process.env.ACCESS_TOKEN as any, (err : any, user : any) => {
             if (err) {
                 return res.status(403).json({ message: 'Forbidden' });
             }
