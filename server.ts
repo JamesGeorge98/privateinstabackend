@@ -10,6 +10,7 @@ app.use(express.json());
 
 app.use(corsMiddleware);
 
+app.use(express.static("uploads"));
 
 
 app.get('/', (req, res) => {

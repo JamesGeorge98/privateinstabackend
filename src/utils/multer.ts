@@ -10,8 +10,8 @@ const fileStorage = multer.diskStorage({
         file: Express.Multer.File,
         callback: DestinationCallback
     ): void => {
-        if (req.body && req.body.id) {
-            const customPath = 'uploads/' + req.body.id;
+        if (req.body && req.body.where && req.body.uuid) {
+            const customPath = 'src/media/' + req.body.uuid + req.body.where;
             callback(null, customPath);
         } else {
             callback(new Error('User not authenticated or missing ID'), "null");
@@ -25,7 +25,9 @@ const fileStorage = multer.diskStorage({
         file: Express.Multer.File, 
         callback: FileNameCallback
     ): void => {
+        
         const uniqueFileName = `${Date.now()}-${file.originalname}`; 
+        console.log(uniqueFileName)
         callback(null, uniqueFileName);
     }
 })
@@ -35,6 +37,7 @@ const fileFilter = (
     file: Express.Multer.File,
     callback: FileFilterCallback
 ): void => {
+    console.log(file.mimetype);
     if (
         file.mimetype === 'image/png' ||
         file.mimetype === 'image/jpg' ||

@@ -121,8 +121,7 @@ class SignUpController {
 
         try {
 
-            const name = req.body.originalname;
-            const data = req.body.file.image;
+            const name = req.body.imagename;
 
             console.log(name);
 
