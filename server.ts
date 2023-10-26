@@ -2,13 +2,15 @@ import express from 'express';
 import authRoute from './src/auth/auth_routes';
 const app = express();
 const port = 3000;
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 import { corsMiddleware } from './src/utils/cors';
-dotenv.config();
+        // dotenv.config();
 
 app.use(express.json());
 
 app.use(corsMiddleware);
+
+
 
 app.get('/', (req, res) => {
     res.send("Hello World");

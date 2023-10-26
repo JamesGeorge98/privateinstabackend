@@ -21,7 +21,7 @@ class SignUpController {
             status: false,
             message: "Username is available"
         };
-        
+
         try {
 
             // fetching username from url
@@ -106,6 +106,38 @@ class SignUpController {
         }
 
     };
+
+
+
+    static uploadProfileImage = async (req: Request, res: Response) => {
+
+        // default response
+        var response: ApiResponse<string[]> = {
+            status: false,
+            message: "Something went wrong"
+        };
+
+        console.log(req.body);
+
+        try {
+
+            const name = req.body.originalname;
+            const data = req.body.file.image;
+
+            console.log(name);
+
+            res.json({ message: 'Image uploaded successfully' });
+        } catch (error) {
+            console.log(error);
+            response.status = false;
+            response.message = "Internal Server Error";
+            return res.status(500).json(response);
+        }
+
+    };
+
+
+
 
 }
 
