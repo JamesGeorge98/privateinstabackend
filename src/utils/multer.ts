@@ -1,5 +1,8 @@
 import { Request } from 'express'
 import multer, { FileFilterCallback , Multer } from 'multer'
+import fs from 'fs';
+
+
 
 type DestinationCallback = (error: Error | null, destination: string) => void
 type FileNameCallback = (error: Error | null, filename: string) => void
@@ -11,23 +14,22 @@ const fileStorage = multer.diskStorage({
         callback: DestinationCallback
     ): void => {
         if (req.body && req.body.where && req.body.uuid) {
-            const customPath = 'src/media/' + req.body.uuid + req.body.where;
+            const customPath = 'src/media/' + req.body.uuid + '/' + req.body.where;
+            if (!fs.existsSync(customPath)){
+                fs.mkdirSync(customPath, { recursive: true });
+            }
             callback(null, customPath);
         } else {
             callback(new Error('User not authenticated or missing ID'), "null");
         }
-        // const customPath = 'uploads/' + request.body.originalname; 
-        // callback(null, customPath);
     },
 
     filename: (
         request: Request, 
         file: Express.Multer.File, 
         callback: FileNameCallback
-    ): void => {
-        
+    ): void => {   
         const uniqueFileName = `${Date.now()}-${file.originalname}`; 
-        console.log(uniqueFileName)
         callback(null, uniqueFileName);
     }
 })
@@ -37,7 +39,6 @@ const fileFilter = (
     file: Express.Multer.File,
     callback: FileFilterCallback
 ): void => {
-    console.log(file.mimetype);
     if (
         file.mimetype === 'image/png' ||
         file.mimetype === 'image/jpg' ||

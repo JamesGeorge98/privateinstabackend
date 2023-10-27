@@ -126,6 +126,7 @@ class SignUpController {
             console.log(name);
 
             res.json({ message: 'Image uploaded successfully' });
+            
         } catch (error) {
             console.log(error);
             response.status = false;
@@ -134,9 +135,6 @@ class SignUpController {
         }
 
     };
-
-
-
 
 }
 
