@@ -4,3 +4,4 @@ export interface ApiResponse<T> {
     error?: string;
     message?: string; // Optional error message
   }
+

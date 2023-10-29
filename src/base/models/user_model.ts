@@ -1,4 +1,6 @@
-export class UserModel {
+import { PIORM } from "../../../db";
+
+class UserModel {
     first_name?: string;
     last_name?: string;
     user_name?: string;
@@ -6,6 +8,8 @@ export class UserModel {
     phone_number?: string;
     email?: string;
     password?: string;
+
+    orm:PIORM = new PIORM();
 
     constructor(params: { first_name?: string, last_name?: string, user_name?: string, email?: string, uuid?: string, phone_number?: string, password?: string }) {
         const { first_name, email, last_name, phone_number, uuid, user_name, password } = params;
@@ -18,5 +22,8 @@ export class UserModel {
         this.phone_number = phone_number;
     }
 
+    
+
 };
 
+export { UserModel}

@@ -1,4 +1,4 @@
-import pool from '../../../db';
+import { pool } from '../../../db';
 import queries from '../auth_queries';
 import { Request, Response } from 'express';
 import { ApiResponse } from '../../base/models/base_response';

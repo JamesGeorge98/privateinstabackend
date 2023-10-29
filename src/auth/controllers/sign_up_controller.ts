@@ -1,4 +1,4 @@
-import pool from '../../../db';
+import { pool, PIORM } from '../../../db';
 import queries from '../auth_queries';
 import { UserModel } from '../../base/models/user_model';
 import { Request, Response } from 'express';
@@ -6,10 +6,14 @@ import getRandomRangedNumber from '../../utils/helper'
 import { ApiResponse } from '../../base/models/base_response';
 import JWTToken from '../../utils/jwt';
 import bcrypt from 'bcrypt';
+import { imageUploadModel } from '../../base/models/media_models';
+import { removeFile } from '../../utils/multer';
 
 
 
 class SignUpController {
+
+    static orm = new PIORM();
 
     // checking wether the user already exists in the databse 
     static isUserNameAvaliable = async (req: Request, res: Response) => {
@@ -30,6 +34,12 @@ class SignUpController {
             const results = await pool.query<UserModel>(`${queries.findOneUserName} '${username}%'`);
 
             const similarNames: (string | undefined)[] = results.rows.map(s => (s.user_name));
+            this.orm.defineModel('insta_users', {
+                "first_name":"", "last_name":"", "user_name":"", "phone_number":"", "email":"", "uuid":"",
+            })
+
+            const users = await this.orm.select(this.orm['insta_users'], { where:"email",});
+            console.log(users.rows);
 
             if (results.rows.length > 0) {
 
@@ -117,18 +127,41 @@ class SignUpController {
             message: "Something went wrong"
         };
 
-        console.log(req.body);
 
         try {
 
-            const name = req.body.imagename;
+            const body: imageUploadModel = req.body;
 
-            console.log(name);
+            if (body.imageName == null || body.imagePath == null) {
 
-            res.json({ message: 'Image uploaded successfully' });
-            
+                return res.status(500).json(response);
+            }
+
+            const url = `${body.imagePath}${body.imageName}`;
+
+
+
+
+
+            // const result = await pool.query<UserModel>(`UPDATE insta_users SET profile_image = $1 WHERE uuid = $2`,
+            //     [url, body.uuid]);
+
+            // if (result.rows.length > 0) {
+
+            //     response = {
+            //         status: true,
+            //         data: [url],
+            //         message: 'Image uploaded successfully'
+            //     };
+
+            //     return res.status(201).json(response);
+            // }
+
+
         } catch (error) {
             console.log(error);
+            const url = `${req.body.imagePath}${req.body.imageName}`;
+            removeFile(url)
             response.status = false;
             response.message = "Internal Server Error";
             return res.status(500).json(response);
