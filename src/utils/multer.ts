@@ -1,6 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response, Router} from 'express'
 import multer, { FileFilterCallback, Multer } from 'multer'
 import fs from 'fs';
+
+
 
 
 type DestinationCallback = (error: Error | null, destination: string) => void
@@ -77,6 +79,10 @@ const removeFile = (fullPath: string): boolean => {
 
     return false
 }
+
+const router = Router();
+
+// router.get('/:username',SignUpController.SignUpController.isUserNameAvaliable);
 
 
 

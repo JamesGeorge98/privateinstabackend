@@ -34,12 +34,12 @@ class SignUpController {
             const results = await pool.query<UserModel>(`${queries.findOneUserName} '${username}%'`);
 
             const similarNames: (string | undefined)[] = results.rows.map(s => (s.user_name));
-            this.orm.defineModel('insta_users', {
-                "first_name":"", "last_name":"", "user_name":"", "phone_number":"", "email":"", "uuid":"",
-            })
+            // this.orm.defineModel('insta_users', {
+            //     "first_name":"", "last_name":"", "user_name":"", "phone_number":"", "email":"", "uuid":"",
+            // })
 
-            const users = await this.orm.select(this.orm['insta_users'], { where:"email",});
-            console.log(users.rows);
+            // const users = await this.orm.select(this.orm['insta_users'], { where:"email",});
+            // console.log(users.rows);
 
             if (results.rows.length > 0) {
 
@@ -122,7 +122,7 @@ class SignUpController {
     static uploadProfileImage = async (req: Request, res: Response) => {
 
         // default response
-        var response: ApiResponse<string[]> = {
+        var response: ApiResponse<string> = {
             status: false,
             message: "Something went wrong"
         };
@@ -137,25 +137,25 @@ class SignUpController {
                 return res.status(500).json(response);
             }
 
-            const url = `${body.imagePath}${body.imageName}`;
+            const url = `${body.imagePath}/${body.imageName}`;
 
+            const result = await pool.query<UserModel>(`UPDATE insta_users SET profile_image = $1 WHERE uuid = $2`,
+                [url, body.uuid]);
 
+            if (result.rowCount > 0) {
 
+                response = {
+                    status: true,
+                    data: url,
+                    message: 'Image uploaded successfully'
+                };
 
+                return res.status(201).json(response);
 
-            // const result = await pool.query<UserModel>(`UPDATE insta_users SET profile_image = $1 WHERE uuid = $2`,
-            //     [url, body.uuid]);
+            } else {
 
-            // if (result.rows.length > 0) {
-
-            //     response = {
-            //         status: true,
-            //         data: [url],
-            //         message: 'Image uploaded successfully'
-            //     };
-
-            //     return res.status(201).json(response);
-            // }
+                return res.status(500).json({ status: false, message: 'Failed to update profile image' });
+            }
 
 
         } catch (error) {
